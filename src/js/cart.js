@@ -5,7 +5,6 @@ function renderCartContents() {
   const htmlItems = cartItems.map((item) => cartItemTemplate(item));
   document.querySelector('.product-list').innerHTML = htmlItems.join('');
 
-  // calcular total después de mostrar los productos
   updateCartTotal(cartItems);
 }
 
@@ -16,7 +15,10 @@ function updateCartTotal(cartItems) {
   if (cartItems.length > 0) {
     cartFooter.classList.remove('hide');
 
-    const total = cartItems.reduce((sum, item) => sum + item.FinalPrice, 0);
+    const total = cartItems.reduce(
+      (sum, item) => sum + parseFloat(item.FinalPrice),
+      0
+    );
 
     totalElement.textContent = total.toFixed(2);
   }
@@ -25,10 +27,7 @@ function updateCartTotal(cartItems) {
 function cartItemTemplate(item) {
   const newItem = `<li class='cart-card divider'>
   <a href='#' class='cart-card__image'>
-    <img
-      src='${item.Image}'
-      alt='${item.Name}'
-    />
+    <img src='${item.Image}' alt='${item.Name}' />
   </a>
   <a href='#'>
     <h2 class='card__name'>${item.Name}</h2>
