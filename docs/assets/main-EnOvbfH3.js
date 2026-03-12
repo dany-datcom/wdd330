@@ -1,4 +1,4 @@
-import{r}from"./utils-B2y0dHph.js";import{P as i}from"./ProductData-ckpWzqDt.js";function c(t){return`<li class='product-card'>
+import{r}from"./utils-CF4im3nJ.js";import{P as i}from"./ProductData-ckpWzqDt.js";function c(t){return`<li class='product-card'>
     <a href='product_pages/?product=${t.Id}'>
       <img src='${t.Image}' alt='Image of ${t.Name}'>
       <h2 class='card__brand'>${t.Brand.Name}</h2>
