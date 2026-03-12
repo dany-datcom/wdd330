@@ -187,8 +187,13 @@ button {
   font-size: var(--small-font);
 }
 
+
+
 .card__name {
   font-size: 1em;
+}
+.hide {
+  display: none;
 }
 
 /* End product list card */
