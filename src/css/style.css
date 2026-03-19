@@ -26,10 +26,6 @@ body {
   color: var(--dark-grey);
 }
 
-.hide {
-  display: none;
-}
-
 img {
   max-width: 100%;
 }
@@ -94,7 +90,7 @@ p {
   margin-top: -1.3em;
 }
 
-.logo--square>div {
+.logo--square > div {
   margin-top: -1.7em;
 }
 
