@@ -1,46 +1,77 @@
-// wrapper for querySelector...returns matching element
 export function qs(selector, parent = document) {
-  return parent.querySelector(selector);
+  const el = parent.querySelector(selector);
+  if (!el) console.warn(`No se encontró: ${selector}`);
+  return el;
 }
-// or a more concise version if you are into that sort of thing:
-// export const qs = (selector, parent = document) => parent.querySelector(selector);
 
-// retrieve data from localstorage
 export function getLocalStorage(key) {
-  return JSON.parse(localStorage.getItem(key)) ;
-}
-// save data to local storage
-export function setLocalStorage(key, data) {
-  localStorage.setItem(key, JSON.stringify(data));
-}
-// set a listener for both touchend and click
-export function setClick(selector, callback) {
-  qs(selector).addEventListener('touchend', (event) => {
-    event.preventDefault();
-    callback();
-  });
-  qs(selector).addEventListener('click', callback);
-}
-
-export function getParam(param){
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  return urlParams.get(param);
-}
-
-export function renderListWithTemplate(
-  templateFn,
-  parentElement,
-  list,
-  position = 'afterbegin',
-  clear = false
-) {
-
-  if (clear) {
-    parentElement.innerHTML = '';
+  try {
+    const data = localStorage.getItem(key);
+    return data ? JSON.parse(data) : null;
+  } catch (error) {
+    console.error('Error leyendo localStorage:', error);
+    return null;
   }
+}
 
-  const htmlStrings = list.map(templateFn);
+export function setLocalStorage(key, data) {
+  try {
+    localStorage.setItem(key, JSON.stringify(data));
+  } catch (error) {
+    console.error('Error guardando en localStorage:', error);
+  }
+}
 
-  parentElement.insertAdjacentHTML(position, htmlStrings.join(''));
+export function setClick(selector, callback) {
+  const element = qs(selector);
+
+  if (!element) return;
+
+  element.addEventListener('touchend', (event) => {
+    event.preventDefault();
+    callback(event);
+  });
+
+  element.addEventListener('click', callback);
+}
+
+export function getParam(param) {
+  const params = new URLSearchParams(window.location.search);
+  return params.get(param);
+}
+
+export function renderWithTemplate(template, parentElement, data, callback) {
+  if (!parentElement) return;
+
+  parentElement.innerHTML = template;
+
+  if (typeof callback === 'function') {
+    callback(data);
+  }
+}
+
+export async function loadTemplate(path) {
+  try {
+    const res = await fetch(path);
+    if (!res.ok) throw new Error('Error cargando template');
+    return await res.text();
+  } catch (error) {
+    console.error(`Error cargando ${path}:`, error);
+    return '';
+  }
+}
+
+export async function loadHeaderFooter() {
+  try {
+    const headerTemplate = await loadTemplate('/partials/header.html');
+    const footerTemplate = await loadTemplate('/partials/footer.html');
+
+    const headerElement = qs('#main-header');
+    const footerElement = qs('#main-footer');
+
+    renderWithTemplate(headerTemplate, headerElement);
+    renderWithTemplate(footerTemplate, footerElement);
+  } catch (error) {
+    console.error('Error cargando header/footer:', error);
+  }
 }

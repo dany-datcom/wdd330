@@ -9,16 +9,34 @@ export default class ProductDetails {
   }
 
   async init() {
-    this.product = await this.dataSource.findProductById(this.productId);
+    const data = await this.dataSource.findProductById(this.productId);
+    this.product = data?.Result || data || {};
+
+    if (!this.product.Id) {
+      console.error('Producto no válido');
+      return;
+    }
+
     this.renderProductDetails();
-    document
-      .getElementById('addToCart')
-      .addEventListener('click', this.addProductToCart.bind(this));
+
+    const btn = document.getElementById('addToCart');
+    if (btn) {
+      btn.addEventListener('click', this.addProductToCart.bind(this));
+    }
   }
 
   addProductToCart() {
     const cartItems = getLocalStorage('so-cart') || [];
-    cartItems.push(this.product);
+
+    const existing = cartItems.find(item => item.Id === this.product.Id);
+
+    if (existing) {
+      existing.Quantity = (existing.Quantity || 1) + 1;
+    } else {
+      this.product.Quantity = 1;
+      cartItems.push(this.product);
+    }
+
     setLocalStorage('so-cart', cartItems);
   }
 
@@ -32,8 +50,8 @@ function productDetailsTemplate(product) {
   document.querySelector('h3').textContent = product.NameWithoutBrand;
 
   const productImage = document.getElementById('productImage');
-  productImage.src = product.Image;
-  productImage.alt = product.NameWithoutBrand;
+  productImage.src = product.Images?.PrimaryLarge || '';
+  productImage.alt = product.NameWithoutBrand || '';
 
   document.getElementById('productPrice').textContent = '$' + product.FinalPrice;
   document.getElementById('productColor').textContent = product.Colors[0].ColorName;
