@@ -23,6 +23,3 @@ async function main() {
 }
 
 main();
-
-await loadHeaderFooter();
-await ProductList.init();
