@@ -4,15 +4,15 @@
   "description": "Boilerplate for WDD 330 SleepOutside project",
   "main": "main.js",
   "scripts": {
-  "predeploy": "npm run build",
-  "deploy": "gh-pages -d dist",
-  "start": "serve -s dist -l $PORT",
-  "build": "vite build --emptyOutDir",
-  "lint": "eslint *.js src/**/*.js",
-  "format": "prettier --ignore-path ./.gitignore --write \"./**/*.{html,json,js,ts,css}\"",
-  "test": "jest",
-  "preview": "vite preview"
-},
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
+    "start": "node server.js",
+    "build": "vite build --emptyOutDir",
+    "lint": "eslint *.js src/**/*.js",
+    "format": "prettier --ignore-path ./.gitignore --write \"./**/*.{html,json,js,ts,css}\"",
+    "test": "jest",
+    "preview": "vite preview"
+  },
   "author": "Shane Thompson",
   "license": "ISC",
   "devDependencies": {
@@ -37,7 +37,6 @@
     "last 3 safari versions"
   ],
   "dependencies": {
-    "express": "^5.2.1",
-    "serve": "^14.2.6"
+    "express": "^5.2.1"
   }
 }
