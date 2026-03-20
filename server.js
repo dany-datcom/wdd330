@@ -8,31 +8,25 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Servir archivos estáticos desde dist
+// Servir archivos estáticos desde la carpeta dist
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// Para todas las rutas, servir el index.html correspondiente
+// Para todas las rutas, servir el archivo HTML correspondiente
 app.get('*', (req, res) => {
-  // Si la ruta es /cart/ o /cart, servir cart/index.html
+  // Determinar qué archivo servir basado en la ruta
+  let filePath = path.join(__dirname, 'dist', 'index.html');
+  
   if (req.path.startsWith('/cart')) {
-    res.sendFile(path.join(__dirname, 'dist', 'cart', 'index.html'));
-  } 
-  // Si la ruta es /checkout/
-  else if (req.path.startsWith('/checkout')) {
-    res.sendFile(path.join(__dirname, 'dist', 'checkout', 'index.html'));
+    filePath = path.join(__dirname, 'dist', 'cart', 'index.html');
+  } else if (req.path.startsWith('/checkout')) {
+    filePath = path.join(__dirname, 'dist', 'checkout', 'index.html');
+  } else if (req.path.startsWith('/product_pages')) {
+    filePath = path.join(__dirname, 'dist', 'product_pages', 'index.html');
+  } else if (req.path.startsWith('/product_listing')) {
+    filePath = path.join(__dirname, 'dist', 'product_listing', 'index.html');
   }
-  // Si la ruta es /product_pages/
-  else if (req.path.startsWith('/product_pages')) {
-    res.sendFile(path.join(__dirname, 'dist', 'product_pages', 'index.html'));
-  }
-  // Si la ruta es /product_listing/
-  else if (req.path.startsWith('/product_listing')) {
-    res.sendFile(path.join(__dirname, 'dist', 'product_listing', 'index.html'));
-  }
-  // Para cualquier otra ruta, servir index.html principal
-  else {
-    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
-  }
+  
+  res.sendFile(filePath);
 });
 
 app.listen(PORT, () => {
