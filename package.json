@@ -2,16 +2,11 @@
   "name": "outside",
   "version": "2.0.0",
   "description": "Boilerplate for WDD 330 SleepOutside project",
-   "type": "module",
+  "type": "module",
   "main": "main.js",
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist",
     "start": "node server.js",
-    "build": "vite build --emptyOutDir",
-    "lint": "eslint *.js src/**/*.js",
-    "format": "prettier --ignore-path ./.gitignore --write \"./**/*.{html,json,js,ts,css}\"",
-    "test": "jest",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "author": "Shane Thompson",
@@ -38,6 +33,6 @@
     "last 3 safari versions"
   ],
   "dependencies": {
-    "express": "^5.2.1"
+    "express": "^4.22.1"
   }
 }
