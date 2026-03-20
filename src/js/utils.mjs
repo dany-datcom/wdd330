@@ -28,19 +28,29 @@ export function getParam(param){
   return urlParams.get(param);
 }
 
-export function renderListWithTemplate(
-  templateFn,
-  parentElement,
-  list,
-  position = 'afterbegin',
-  clear = false
-) {
-
-  if (clear) {
-    parentElement.innerHTML = '';
+export function renderWithTemplate(template, parentElement, data, callback) {
+  parentElement.innerHTML = template;
+  if (typeof callback === 'function') {
+    callback(data);
   }
+}
 
-  const htmlStrings = list.map(templateFn);
+export async function loadTemplate(path) {
+  const res = await fetch(path);
+  const template = await res.text();
+  return template;
+}
 
-  parentElement.insertAdjacentHTML(position, htmlStrings.join(''));
+export async function loadHeaderFooter() {
+  // traer templates
+  const headerTemplate = await loadTemplate('/partials/header.html');
+  const footerTemplate = await loadTemplate('/partials/footer.html');
+
+  // agarrar elementos del DOM
+  const headerElement = document.querySelector('#main-header');
+  const footerElement = document.querySelector('#main-footer');
+
+  // renderizar
+  renderWithTemplate(headerTemplate, headerElement);
+  renderWithTemplate(footerTemplate, footerElement);
 }
