@@ -1,8 +1,7 @@
 import ProductData from './ProductData.mjs';
 import ProductList from './ProductList.mjs';
+import { renderBreadcrumb } from './breadcrumb.js';
 import { loadHeaderFooter, getParam } from './utils.mjs';
-
-
 
 async function main() {
     const category = getParam('category') || 'tents';
@@ -18,9 +17,19 @@ async function main() {
 
     try {
         await loadHeaderFooter();
+
+        // 🔥 Traer productos manualmente para el breadcrumb
+        const products = await dataSource.getData(category);
+
+        // 🔥 Render breadcrumb AQUÍ
+        renderBreadcrumb({
+            category: category,
+            count: products.length
+        });
+
         await myList.init();
 
-        // ✅ AQUÍ va el título
+        // ✅ Título bonito
         const title = document.querySelector('.title');
         if (title) {
             title.textContent = category

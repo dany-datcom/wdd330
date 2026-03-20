@@ -2,6 +2,7 @@ import { getParam } from './utils.mjs';
 import ProductData from './ProductData.mjs';
 import ProductDetails from './ProductDetails.mjs';
 import { loadHeaderFooter } from './utils.mjs';
+import { renderBreadcrumb } from './breadcrumb.js';
 
 async function main() {
   const productId = getParam('product');
@@ -18,6 +19,11 @@ async function main() {
   try {
     await loadHeaderFooter();
     await product.init();
+
+    renderBreadcrumb({
+      category: category
+    });
+
   } catch (error) {
     console.error('Error cargando el producto:', error);
   }
