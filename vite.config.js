@@ -3,11 +3,11 @@ import { defineConfig } from 'vite';
 
 export default defineConfig({
   root: 'src/',
-  base: './', 
+  base: './',
 
   build: {
     outDir: '../dist',
-    emptyOutDir: true, 
+    emptyOutDir: true,
     rollupOptions: {
       input: {
         main: resolve(__dirname, 'src/index.html'),
@@ -17,5 +17,10 @@ export default defineConfig({
         productListing: resolve(__dirname, 'src/product_listing/index.html'),
       },
     },
+  },
+
+  server: {
+    host: true, // hace que escuche en 0.0.0.0
+    port: Number(process.env.PORT) || 5173, // usa el puerto que Render asigna
   },
 });
