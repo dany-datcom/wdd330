@@ -6,7 +6,7 @@
   "scripts": {
   "predeploy": "npm run build",
   "deploy": "gh-pages -d dist",
-  "start": "serve -s dist -l $PORT",  // <--- esto reemplaza "vite --host"
+  "start": "serve -s dist -l $PORT",
   "build": "vite build --emptyOutDir",
   "lint": "eslint *.js src/**/*.js",
   "format": "prettier --ignore-path ./.gitignore --write \"./**/*.{html,json,js,ts,css}\"",
