@@ -98,13 +98,21 @@ export default class CheckoutProcess {
 
     const service = new ExternalServices();
 
-    const result = await service.checkout(order);
+    try {
+      const result = await service.checkout(order);
 
-    console.log('Respuesta del servidor:', result);
+      console.log('Respuesta del servidor:', result);
 
-    if (result.orderId) {
-      localStorage.removeItem(this.key);
-      window.location.href = '/';
+      if (result.orderId) {
+        localStorage.removeItem(this.key);
+        window.location.href = '/checkout/success.html';
+      }
+
+    } catch (err) {
+      console.log('ERROR:', err);
+
+      // 👇 mostrar error del backend
+      alert(err.message.expiration || 'Something went wrong');
     }
   }
 }
