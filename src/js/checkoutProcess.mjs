@@ -1,3 +1,4 @@
+import { alertMessage } from './utils.mjs';
 import ExternalServices from './ExternalServices.mjs';
 export default class CheckoutProcess {
   constructor(key, outputSelector) {
@@ -112,7 +113,7 @@ export default class CheckoutProcess {
       console.log('ERROR:', err);
 
       // 👇 mostrar error del backend
-      alert(err.message.expiration || 'Something went wrong');
+      alertMessage(err.message.expiration || 'Something went wrong');
     }
   }
 }

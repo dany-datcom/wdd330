@@ -45,6 +45,6 @@ export default class ExternalServices {
     };
 
     const response = await fetch(url, options);
-    return await response.json();
+    return await convertToJson(response);
   }
 }
