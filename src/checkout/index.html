@@ -8,59 +8,63 @@
 
     <title>Sleep Outside | Checkout</title>
 
-    <link rel="stylesheet" href="css/style.css" />
+    <!-- ✅ CSS CORREGIDO -->
+    <link rel="stylesheet" href="/src/css/style.css" />
   </head>
 
   <body>
     <header class="divider" id="main-header"></header>
 
     <main class="divider">
-  <section class="products">
-    <h2>Review & Place your Order</h2>
+      <section class="products">
+        <h2>Review & Place your Order</h2>
 
-    <!-- FORM -->
-    <form id="checkout-form" class="checkout-form">
-      <fieldset>
-        <legend>Customer Info</legend>
+        <!-- FORM -->
+        <form id="checkout-form" class="checkout-form">
+          <fieldset>
+            <legend>Customer Info</legend>
 
-        <input name="fname" placeholder="First Name" required />
-        <input name="lname" placeholder="Last Name" required />
+            <input name="fname" placeholder="First Name" required />
+            <input name="lname" placeholder="Last Name" required />
 
-        <input name="street" placeholder="Street Address" required />
-        <input name="city" placeholder="City" required />
-        <input name="state" placeholder="State" required />
-        <input name="zip" placeholder="Zip Code" required />
-      </fieldset>
+            <input name="street" placeholder="Street Address" required />
+            <input name="city" placeholder="City" required />
+            <input name="state" placeholder="State" required />
+            <input name="zip" placeholder="Zip Code" required />
+          </fieldset>
 
-      <fieldset>
-        <legend>Payment</legend>
+          <fieldset>
+            <legend>Payment</legend>
 
-        <input
-          name="cardNumber"
-          placeholder="Card Number"
-          value="1234123412341234"
-          required
-        />
+            <input
+              name="cardNumber"
+              placeholder="Card Number"
+              value="1234123412341234"
+              required
+            />
 
-        <input name="expiration" placeholder="MM/YY" required />
+            <input name="expiration" placeholder="MM/YY" required />
 
-        <input name="code" placeholder="CVV" value="123" required />
-      </fieldset>
+            <input name="code" placeholder="CVV" value="123" required />
+          </fieldset>
 
-      <button type="submit">Checkout</button>
-    </form>
+          <button type="submit">Checkout</button>
+        </form>
 
-    <!-- ORDER SUMMARY -->
-    <div id="order-summary" class="order-summary">
-      <h3>Order Summary</h3>
-      <p>Subtotal: <span id="subtotal">$0.00</span></p>
-      <p>Tax: <span id="tax">$0.00</span></p>
-      <p>Shipping: <span id="shipping">$0.00</span></p>
-      <p><strong>Total: <span id="total">$0.00</span></strong></p>
-    </div>
-  </section>
-</main>
+        <!-- ORDER SUMMARY -->
+        <div id="order-summary" class="order-summary">
+          <h3>Order Summary</h3>
+          <p>Subtotal: <span id="subtotal">$0.00</span></p>
+          <p>Tax: <span id="tax">$0.00</span></p>
+          <p>Shipping: <span id="shipping">$0.00</span></p>
+          <p><strong>Total: <span id="total">$0.00</span></strong></p>
+        </div>
+      </section>
+    </main>
 
     <footer id="main-footer"></footer>
+
+    <!-- ✅ ESTO ES LO MÁS IMPORTANTE -->
+    <script type="module" src="/src/js/main.js"></script>
   </body>
 </html>
