@@ -13,6 +13,7 @@ async function main() {
     const checkout = new CheckoutProcess('so-cart', '#order-summary');
 
     checkout.init();
+    checkout.calculateOrderTotal();
 
     form.zip.addEventListener('change', () => {
       checkout.calculateOrderTotal();
