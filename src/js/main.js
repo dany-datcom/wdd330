@@ -1,25 +1,41 @@
-import ProductData from './ProductData.mjs';
+import ExternalServices from './ExternalServices.mjs';
 import ProductList from './ProductList.mjs';
 import { loadHeaderFooter } from './utils.mjs';
+import CheckoutProcess from './checkoutProcess.mjs';
 
 async function main() {
-    const listElement = document.querySelector('.product-list');
+  await loadHeaderFooter();
 
-    if (!listElement) {
-        console.error('No se encontró .product-list');
-        return;
-    }
+  // 🛒 SI ESTÁS EN CHECKOUT
+  const form = document.querySelector('#checkout-form');
 
+  if (form) {
+    const checkout = new CheckoutProcess('so-cart', '#order-summary');
+
+    checkout.init();
+
+    form.zip.addEventListener('change', () => {
+      checkout.calculateOrderTotal();
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      checkout.checkout(form);
+    });
+
+    return; // 🔥 IMPORTANTE: no seguir ejecutando lo de productos
+  }
+
+  // 🏕️ SI ESTÁS EN PRODUCTOS
+  const listElement = document.querySelector('.product-list');
+
+  if (listElement) {
     const category = 'tents';
-    const dataSource = new ProductData(category);
+    const dataSource = new ExternalServices();
     const productList = new ProductList(category, dataSource, listElement);
 
-    try {
-        await loadHeaderFooter();
-        await productList.init();
-    } catch (error) {
-        console.error('Error inicializando la página:', error);
-    }
+    await productList.init();
+  }
 }
 
 main();
