@@ -81,5 +81,10 @@ export default class CheckoutProcess {
     const result = await service.checkout(order);
 
     console.log('Respuesta del servidor:', result);
+
+    if (result.orderId) {
+    localStorage.removeItem(this.key);
+    window.location.href = '/';
+  }
   }
 }
