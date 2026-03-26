@@ -50,14 +50,14 @@ export default class CheckoutProcess {
       `$${this.orderTotal.toFixed(2)}`;
   }
 
-  packageItems(items) {
-    return items.map(item => ({
-      id: item.id,
-      name: item.name,
-      price: item.price,
-      quantity: item.quantity
-    }));
-  }
+ packageItems(items) {
+  return items.map(item => ({
+    id: item.Id || item.id,
+    name: item.Name || item.name,
+    price: item.FinalPrice || item.price,
+    quantity: item.Quantity || item.quantity
+  }));
+}
 
   async checkout(form) {
     const formData = new FormData(form);
