@@ -67,14 +67,26 @@ export default class CheckoutProcess {
       data[key] = value;
     });
 
-    let expiration = data.expiration;
+    // NORMALIZAR EXPIRATION COMPLETO
+    let expiration = data.expiration.trim();
 
-    if (expiration.startsWith('0')) {
-      expiration = expiration.substring(1);
+    // convertir formatos tipo 2027-08 → 8/27
+    if (expiration.includes('-')) {
+      const [year, month] = expiration.split('-');
+      expiration = `${parseInt(month)}/${year.slice(-2)}`;
+    }
+
+    // quitar 0 inicial (08 → 8)
+    expiration = expiration.replace(/^0/, '');
+
+    // validar formato final M/YY
+    const regex = /^[1-9]|1[0-2]\/\d{2}$/;
+
+    if (!/^(1[0-2]|[1-9])\/\d{2}$/.test(expiration)) {
+      console.log('Formato inválido:', expiration);
     }
 
     data.expiration = expiration;
-
     const order = {
       ...data,
       orderDate: new Date().toISOString(),
