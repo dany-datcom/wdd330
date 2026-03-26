@@ -50,14 +50,14 @@ export default class CheckoutProcess {
       `$${this.orderTotal.toFixed(2)}`;
   }
 
- packageItems(items) {
-  return items.map(item => ({
-    id: item.Id || item.id,
-    name: item.Name || item.name,
-    price: item.FinalPrice || item.price,
-    quantity: item.Quantity || item.quantity
-  }));
-}
+  packageItems(items) {
+    return items.map(item => ({
+      id: item.Id || item.id,
+      name: item.Name || item.name,
+      price: item.FinalPrice || item.price,
+      quantity: item.Quantity || item.quantity
+    }));
+  }
 
   async checkout(form) {
     const formData = new FormData(form);
@@ -66,6 +66,14 @@ export default class CheckoutProcess {
     formData.forEach((value, key) => {
       data[key] = value;
     });
+
+    let expiration = data.expiration;
+
+    if (expiration.startsWith('0')) {
+      expiration = expiration.substring(1);
+    }
+
+    data.expiration = expiration;
 
     const order = {
       ...data,
@@ -83,8 +91,8 @@ export default class CheckoutProcess {
     console.log('Respuesta del servidor:', result);
 
     if (result.orderId) {
-    localStorage.removeItem(this.key);
-    window.location.href = '/';
-  }
+      localStorage.removeItem(this.key);
+      window.location.href = '/';
+    }
   }
 }
