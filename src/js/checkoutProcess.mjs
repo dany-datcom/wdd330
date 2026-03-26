@@ -17,7 +17,7 @@ export default class CheckoutProcess {
 
   calculateItemSubTotal() {
     this.itemTotal = this.list.reduce(
-      (sum, item) => sum + item.price * item.quantity,
+      (sum, item) => sum + item.FinalPrice * item.Quantity,
       0
     );
 
