@@ -84,8 +84,9 @@ export default class CheckoutProcess {
     const regex = /^[1-9]|1[0-2]\/\d{2}$/;
 
     if (!/^(1[0-2]|[1-9])\/\d{2}$/.test(expiration)) {
-      console.log('Formato inválido:', expiration);
-    }
+  alertMessage('Invalid expiration format. Use MM/YY (e.g. 8/27)');
+  return; // 💥 DETIENE TODO
+}
 
     data.expiration = expiration;
     const order = {
