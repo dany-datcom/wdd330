@@ -1,13 +1,7 @@
 const baseURL = import.meta.env.VITE_SERVER_URL;
 
 async function convertToJson(res) {
-  let jsonResponse = null;
-
-  try {
-    jsonResponse = await res.json();
-  } catch (e) {
-    jsonResponse = { error: 'Invalid JSON response' };
-  }
+  const jsonResponse = await res.json();
 
   if (res.ok) {
     return jsonResponse;

@@ -70,36 +70,35 @@ export async function loadHeaderFooter() {
 
 // 🔥 ALERTA MEJORADA
 export function alertMessage(message, scroll = true) {
+  // eliminar alert anterior si existe
   const existingAlert = document.querySelector('.alert');
   if (existingAlert) existingAlert.remove();
 
+  // crear contenedor
   const alert = document.createElement('div');
   alert.classList.add('alert');
 
+  // contenido del alert
   alert.innerHTML = `
     <span>${message}</span>
     <button class='close-btn'>✖</button>
   `;
 
-  // cerrar con click en X
-  alert.addEventListener('click', (e) => {
+  // cerrar alert al hacer click en la X
+  alert.addEventListener('click', function (e) {
     if (e.target.classList.contains('close-btn')) {
-      alert.remove();
+      this.remove();
     }
   });
 
+  // agregar al inicio del main
   const main = document.querySelector('main');
-  if (main) main.prepend(alert);
+  if (main) {
+    main.prepend(alert);
+  }
 
-  // scroll opcional
+  // scroll opcional hacia arriba
   if (scroll) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-
-  // 🔥 auto desaparecer después de 5s (pro UX)
-  setTimeout(() => {
-    if (alert.parentElement) {
-      alert.remove();
-    }
-  }, 5000);
 }

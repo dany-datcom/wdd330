@@ -13,15 +13,6 @@ async function main() {
     const checkout = new CheckoutProcess('so-cart', '#order-summary');
 
     checkout.init();
-    checkout.calculateOrderTotal();
-
-    const zipInput = form.querySelector('[name="zip"]');
-
-    if (zipInput) {
-      zipInput.addEventListener('change', () => {
-        checkout.calculateOrderTotal();
-      });
-    }
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();

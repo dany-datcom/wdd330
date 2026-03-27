@@ -29,10 +29,8 @@ export default class CheckoutProcess {
   }
 
   calculateOrderTotal() {
-    // TAX 6%
     this.tax = this.itemTotal * 0.06;
 
-    // SHIPPING
     this.shipping =
       this.list.length > 0 ? 10 + (this.list.length - 1) * 2 : 0;
 
@@ -62,36 +60,12 @@ export default class CheckoutProcess {
   }
 
   async checkout(form) {
-    // 🧹 limpiar alert anterior
-    const oldAlert = document.querySelector('.alert');
-    if (oldAlert) oldAlert.remove();
-
     const formData = new FormData(form);
     const data = {};
 
     formData.forEach((value, key) => {
       data[key] = value;
     });
-
-    // 🔥 NORMALIZAR EXPIRATION
-    let expiration = data.expiration.trim();
-
-    if (expiration.includes('-')) {
-      const [year, month] = expiration.split('-');
-      expiration = `${parseInt(month)}/${year.slice(-2)}`;
-    }
-
-    expiration = expiration.replace(/^0/, '');
-
-    // ✅ VALIDAR FORMATO
-    if (!/^(1[0-2]|[1-9])\/\d{2}$/.test(expiration)) {
-      alertMessage('Invalid expiration format. Use MM/YY (e.g. 8/27)');
-      form.expiration.value = '';
-      form.expiration.focus();
-      return;
-    }
-
-    data.expiration = expiration;
 
     const order = {
       ...data,
@@ -104,31 +78,25 @@ export default class CheckoutProcess {
 
     const service = new ExternalServices();
 
+    // 🔥 AQUÍ está lo que te están pidiendo
     try {
       const result = await service.checkout(order);
 
-      console.log('Respuesta del servidor:', result);
-
-      if (result?.orderId) {
-        // ✅ limpiar carrito
+      // manejo del éxito
+      if (result && result.orderId) {
         localStorage.removeItem(this.key);
-
-        // ✅ redirigir
         window.location.href = '/checkout/success.html';
-      } else {
-        alertMessage('Order failed. Please try again.');
       }
 
     } catch (err) {
-      console.log('ERROR:', err);
-
+      // 🔥 AQUÍ manejas el error
       let message = 'Something went wrong';
 
-      if (err?.message) {
-        if (typeof err.message === 'string') {
-          message = err.message;
-        } else if (typeof err.message === 'object') {
+      if (err && err.message) {
+        if (typeof err.message === 'object') {
           message = Object.values(err.message).join(', ');
+        } else {
+          message = err.message;
         }
       }
 

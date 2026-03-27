@@ -1,70 +1,70 @@
 <!doctype html>
 
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <meta charset="UTF-8" />
 
-    <title>Sleep Outside | Checkout</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- ✅ CSS CORREGIDO -->
-    <link rel="stylesheet" href="/css/style.css" />
-  </head>
+  <title>Sleep Outside | Checkout</title>
 
-  <body>
-    <header class="divider" id="main-header"></header>
+  <!-- ✅ CSS CORREGIDO -->
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
 
-    <main class="divider">
-      <section class="products">
-        <h2>Review & Place your Order</h2>
+<body>
+  <header class="divider" id="main-header"></header>
 
-        <!-- FORM -->
-        <form id="checkout-form" class="checkout-form">
-          <fieldset>
-            <legend>Customer Info</legend>
+  <main class="divider">
+    <section class="products">
+      <h2>Review & Place your Order</h2>
 
-            <input name="fname" placeholder="First Name" required />
-            <input name="lname" placeholder="Last Name" required />
+      <!-- FORM -->
+      <form id='checkoutForm' class='checkout-form'>
+        <fieldset>
+          <legend>Customer Info</legend>
 
-            <input name="street" placeholder="Street Address" required />
-            <input name="city" placeholder="City" required />
-            <input name="state" placeholder="State" required />
-            <input name="zip" placeholder="Zip Code" required />
-          </fieldset>
+          <input name='firstName' placeholder='First Name' required />
+          <input name='lastName' placeholder='Last Name' required />
 
-          <fieldset>
-            <legend>Payment</legend>
+          <input name='street' placeholder='Street Address' required />
+          <input name='city' placeholder='City' required />
+          <input name='state' placeholder='State' required />
 
-            <input
-              name="cardNumber"
-              placeholder="Card Number"
-              value="1234123412341234"
-              required
-            />
+          <input name='zip' placeholder='Zip Code' required pattern='\d{5}' title='Enter a 5-digit ZIP code' />
+        </fieldset>
 
-            <input name="expiration" placeholder="MM/YY" required />
+        <fieldset>
+          <legend>Payment</legend>
 
-            <input name="code" placeholder="CVV" value="123" required />
-          </fieldset>
+          <input name='cardNumber' placeholder='Card Number' required pattern='\d{16}'
+            title='Enter a 16-digit card number' />
 
-          <button type="submit">Checkout</button>
-        </form>
+          <input name='expiration' placeholder='MM/YY' required pattern='^(0[1-9]|1[0-2])\/\d{2}$'
+            title='Format: MM/YY' />
 
-        <!-- ORDER SUMMARY -->
-        <div id="order-summary" class="order-summary">
-          <h3>Order Summary</h3>
-          <p>Subtotal: <span id="subtotal">$0.00</span></p>
-          <p>Tax: <span id="tax">$0.00</span></p>
-          <p>Shipping: <span id="shipping">$0.00</span></p>
-          <p><strong>Total: <span id="total">$0.00</span></strong></p>
-        </div>
-      </section>
-    </main>
+          <input name='code' placeholder='CVV' required pattern='\d{3}' title='Enter 3-digit CVV' />
+        </fieldset>
 
-    <footer id="main-footer"></footer>
+        <button id='checkoutSubmit' type='submit'>Checkout</button>
+      </form>
 
-    <!-- ✅ ESTO ES LO MÁS IMPORTANTE -->
-    <script type="module" src="../js/main.js"></script>
-  </body>
+      <!-- ORDER SUMMARY -->
+      <div id="order-summary" class="order-summary">
+        <h3>Order Summary</h3>
+        <p>Subtotal: <span id="subtotal">$0.00</span></p>
+        <p>Tax: <span id="tax">$0.00</span></p>
+        <p>Shipping: <span id="shipping">$0.00</span></p>
+        <p><strong>Total: <span id="total">$0.00</span></strong></p>
+      </div>
+    </section>
+  </main>
+
+  <footer id="main-footer"></footer>
+
+  <!-- ✅ ESTO ES LO MÁS IMPORTANTE -->
+  <script type="module" src="../js/main.js"></script>
+</body>
+
 </html>
