@@ -109,7 +109,7 @@ export default class CheckoutProcess {
 
       if (result && result.orderId) {
         localStorage.removeItem(this.key);
-        window.location.href = '/checkout/success.html';
+        window.location.href = './success.html';
       }
 
     } catch (err) {
