@@ -1,7 +1,7 @@
 import ExternalServices from './ExternalServices.mjs';
 import ProductList from './ProductList.mjs';
 import { loadHeaderFooter } from './utils.mjs';
-import CheckoutProcess from './checkoutProcess.mjs';
+import checkoutProcess from './checkoutProcess.mjs';
 
 async function main() {
   await loadHeaderFooter();
@@ -10,7 +10,7 @@ async function main() {
   const form = document.querySelector('#checkoutForm');
 
   if (form) {
-    const checkout = new CheckoutProcess('so-cart', '#order-summary');
+    const checkout = new checkoutProcess('so-cart', '#order-summary');
 
     checkout.init();
 

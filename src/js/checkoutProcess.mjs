@@ -1,7 +1,7 @@
 import { alertMessage } from './utils.mjs';
 import ExternalServices from './ExternalServices.mjs';
 
-export default class CheckoutProcess {
+export default class checkoutProcess {
   constructor(key, outputSelector) {
     this.key = key;
     this.outputSelector = outputSelector;
