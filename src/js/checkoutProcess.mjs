@@ -72,8 +72,16 @@ export default class CheckoutProcess {
     });
 
     // 🔥 FIX 1: limpiar tarjeta (CRÍTICO)
-    data.cardNumber = data.cardNumber.replace(/\D/g, '');
+    // limpiar tarjeta
+    data.cardNumber = (data.cardNumber || '')
+      .replace(/\D/g, '')
+      .slice(0, 16);
 
+    // validar
+    if (data.cardNumber.length !== 16) {
+      alertMessage('Card number must be exactly 16 digits');
+      return;
+    }
     // 🔥 FIX 2: normalizar expiration (CRÍTICO)
     let expiration = data.expiration.trim();
 
