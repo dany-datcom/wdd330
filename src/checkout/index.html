@@ -38,7 +38,7 @@
         <fieldset>
           <legend>Payment</legend>
 
-          <input name='cardNumber' placeholder='Card Number' required pattern='\d{16}'
+          <input name='cardNumber' placeholder='Card Number' required pattern='[\d\s]{16,19}' 
             title='Enter a 16-digit card number' />
 
           <input name='expiration' placeholder='MM/YY' required pattern='^(0[1-9]|1[0-2])\/\d{2}$'
