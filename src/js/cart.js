@@ -10,6 +10,8 @@ function renderCartContents() {
   const htmlItems = cartItems.map(cartItemTemplate);
   productList.innerHTML = htmlItems.join('');
 
+  addRemoveListeners();
+
   if (cartItems.length > 0) {
     footer?.classList.remove('hide');
 
@@ -18,6 +20,27 @@ function renderCartContents() {
   } else {
     footer?.classList.add('hide');
   }
+}
+
+function addRemoveListeners() {
+  const buttons = document.querySelectorAll('.remove-item');
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const id = e.target.dataset.id;
+      removeFromCart(id);
+    });
+  });
+}
+
+function removeFromCart(id) {
+  let cart = getLocalStorage('so-cart') || [];
+
+  cart = cart.filter(item => item.Id !== id);// 👈 fix importante
+
+  localStorage.setItem('so-cart', JSON.stringify(cart));
+
+  renderCartContents();
 }
 
 function calculateTotal(cartItems) {
@@ -33,6 +56,9 @@ function cartItemTemplate(item) {
   const image = item.Images?.PrimaryMedium || '';
 
   return `<li class='cart-card divider'>
+    
+    <span class="remove-item" data-id="${item.Id}">❌</span>
+
     <a href='#' class='cart-card__image'>
       <img src='${image}' alt='${item.Name}' />
     </a>
@@ -43,17 +69,16 @@ function cartItemTemplate(item) {
     <p class='cart-card__quantity'>qty: ${item.Quantity || 1}</p>
     <p class='cart-card__price'>$${item.FinalPrice}</p>
   </li>`;
+
 }
 
-// Función principal asíncrona
 async function main() {
-    try {
-        await loadHeaderFooter();  // Espera a que cargue header/footer
-        renderCartContents();      // Luego renderiza el carrito
-    } catch (error) {
-        console.error('Error initializing cart page:', error);
-    }
+  try {
+    await loadHeaderFooter();
+    renderCartContents();
+  } catch (error) {
+    console.error('Error initializing cart page:', error);
+  }
 }
 
-// Ejecuta la función principal
 main();
