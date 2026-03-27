@@ -36,7 +36,7 @@ function addRemoveListeners() {
 function removeFromCart(id) {
   let cart = getLocalStorage('so-cart') || [];
 
-  cart = cart.filter(item => item.Id !== Number(id)); // 👈 fix importante
+  cart = cart.filter(item => item.Id !== id);// 👈 fix importante
 
   localStorage.setItem('so-cart', JSON.stringify(cart));
 
@@ -69,7 +69,7 @@ function cartItemTemplate(item) {
     <p class='cart-card__quantity'>qty: ${item.Quantity || 1}</p>
     <p class='cart-card__price'>$${item.FinalPrice}</p>
   </li>`;
-  console.log('ITEM:', item);
+
 }
 
 async function main() {
