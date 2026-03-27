@@ -374,6 +374,48 @@ font-size: 1rem;
 margin-top: 1rem;
 }
 
+.success {
+  text-align: center;
+  padding: 2rem;
+}
+
+.success h2 {
+  color: green;
+  margin-bottom: 1rem;
+}
+
+.success .btn {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.7rem 1.2rem;
+  background-color: #333;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+}
+
+.alert {
+  background-color: #ffe0e0;
+  color: #900;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  border: 1px solid #ffb3b3;
+  position: relative;
+  font-size: 0.95rem;
+}
+
+.alert .close-btn {
+  position: absolute;
+  right: 10px;
+  top: 8px;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #900;
+}
+
 .order-summary {
 margin-top: 2rem;
 padding: 1rem;

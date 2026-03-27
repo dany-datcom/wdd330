@@ -24,7 +24,6 @@ export function setLocalStorage(key, data) {
 
 export function setClick(selector, callback) {
   const element = qs(selector);
-
   if (!element) return;
 
   element.addEventListener('touchend', (event) => {
@@ -42,12 +41,8 @@ export function getParam(param) {
 
 export function renderWithTemplate(template, parentElement, data, callback) {
   if (!parentElement) return;
-
   parentElement.innerHTML = template;
-
-  if (typeof callback === 'function') {
-    callback(data);
-  }
+  if (typeof callback === 'function') callback(data);
 }
 
 export async function loadTemplate(path) {
@@ -66,12 +61,44 @@ export async function loadHeaderFooter() {
     const headerTemplate = await loadTemplate('/partials/header.html');
     const footerTemplate = await loadTemplate('/partials/footer.html');
 
-    const headerElement = qs('#main-header');
-    const footerElement = qs('#main-footer');
-
-    renderWithTemplate(headerTemplate, headerElement);
-    renderWithTemplate(footerTemplate, footerElement);
+    renderWithTemplate(headerTemplate, qs('#main-header'));
+    renderWithTemplate(footerTemplate, qs('#main-footer'));
   } catch (error) {
     console.error('Error cargando header/footer:', error);
+  }
+}
+
+// 🔥 ALERTA MEJORADA
+export function alertMessage(message, scroll = true) {
+  // eliminar alert anterior si existe
+  const existingAlert = document.querySelector('.alert');
+  if (existingAlert) existingAlert.remove();
+
+  // crear contenedor
+  const alert = document.createElement('div');
+  alert.classList.add('alert');
+
+  // contenido del alert
+  alert.innerHTML = `
+    <span>${message}</span>
+    <button class='close-btn'>✖</button>
+  `;
+
+  // cerrar alert al hacer click en la X
+  alert.addEventListener('click', function (e) {
+    if (e.target.classList.contains('close-btn')) {
+      this.remove();
+    }
+  });
+
+  // agregar al inicio del main
+  const main = document.querySelector('main');
+  if (main) {
+    main.prepend(alert);
+  }
+
+  // scroll opcional hacia arriba
+  if (scroll) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }

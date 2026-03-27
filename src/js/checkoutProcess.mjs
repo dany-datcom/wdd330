@@ -1,4 +1,6 @@
+import { alertMessage } from './utils.mjs';
 import ExternalServices from './ExternalServices.mjs';
+
 export default class CheckoutProcess {
   constructor(key, outputSelector) {
     this.key = key;
@@ -26,13 +28,15 @@ export default class CheckoutProcess {
   }
 
   calculateOrderTotal() {
-    // TAX 6%
     this.tax = this.itemTotal * 0.06;
 
-    // SHIPPING
-    this.shipping = this.list.length > 0
-      ? 10 + (this.list.length - 1) * 2
-      : 0;
+    const totalItems = this.list.reduce(
+      (sum, item) => sum + item.Quantity,
+      0
+    );
+
+    this.shipping =
+      totalItems > 0 ? 10 + (totalItems - 1) * 2 : 0;
 
     this.orderTotal = this.itemTotal + this.tax + this.shipping;
 
@@ -51,7 +55,7 @@ export default class CheckoutProcess {
   }
 
   packageItems(items) {
-    return items.map(item => ({
+    return items.map((item) => ({
       id: item.Id || item.id,
       name: item.Name || item.name,
       price: item.FinalPrice || item.price,
@@ -67,26 +71,28 @@ export default class CheckoutProcess {
       data[key] = value;
     });
 
-    // NORMALIZAR EXPIRATION COMPLETO
+    // 🔥 FIX 1: limpiar tarjeta (CRÍTICO)
+    // limpiar tarjeta
+    data.cardNumber = (data.cardNumber || '')
+      .replace(/\D/g, '')
+      .slice(0, 16);
+
+    // validar
+    if (data.cardNumber.length !== 16) {
+      alertMessage('Card number must be exactly 16 digits');
+      return;
+    }
+    // 🔥 FIX 2: normalizar expiration (CRÍTICO)
     let expiration = data.expiration.trim();
 
-    // convertir formatos tipo 2027-08 → 8/27
     if (expiration.includes('-')) {
       const [year, month] = expiration.split('-');
       expiration = `${parseInt(month)}/${year.slice(-2)}`;
     }
 
-    // quitar 0 inicial (08 → 8)
     expiration = expiration.replace(/^0/, '');
-
-    // validar formato final M/YY
-    const regex = /^[1-9]|1[0-2]\/\d{2}$/;
-
-    if (!/^(1[0-2]|[1-9])\/\d{2}$/.test(expiration)) {
-      console.log('Formato inválido:', expiration);
-    }
-
     data.expiration = expiration;
+    console.log('CARD NUMBER ENVIADO:', data.cardNumber);
     const order = {
       ...data,
       orderDate: new Date().toISOString(),
@@ -98,13 +104,29 @@ export default class CheckoutProcess {
 
     const service = new ExternalServices();
 
-    const result = await service.checkout(order);
+    try {
+      const result = await service.checkout(order);
 
-    console.log('Respuesta del servidor:', result);
+      if (result && result.orderId) {
+        localStorage.removeItem(this.key);
+        window.location.href = './success.html';
+      }
 
-    if (result.orderId) {
-      localStorage.removeItem(this.key);
-      window.location.href = '/';
+    } catch (err) {
+      console.log('ERROR COMPLETO:', err);
+      console.log('MENSAJE DEL BACKEND:', err.message);
+
+      let message = 'Something went wrong';
+
+      if (err && err.message) {
+        if (typeof err.message === 'object') {
+          message = Object.values(err.message).join(', ');
+        } else {
+          message = err.message;
+        }
+      }
+
+      alertMessage(message);
     }
   }
 }

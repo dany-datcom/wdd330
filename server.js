@@ -22,6 +22,10 @@ app.get('/checkout', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'checkout', 'index.html'));
 });
 
+app.get('/checkout/success.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'checkout', 'success.html'));
+});
+
 app.get('/product_pages', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'product_pages', 'index.html'));
 });

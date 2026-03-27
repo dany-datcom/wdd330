@@ -6,27 +6,38 @@ import CheckoutProcess from './checkoutProcess.mjs';
 async function main() {
   await loadHeaderFooter();
 
-  // 🛒 SI ESTÁS EN CHECKOUT
-  const form = document.querySelector('#checkout-form');
+  // 🛒 CHECKOUT
+  const form = document.querySelector('#checkoutForm');
 
   if (form) {
     const checkout = new CheckoutProcess('so-cart', '#order-summary');
 
     checkout.init();
 
-    form.zip.addEventListener('change', () => {
-      checkout.calculateOrderTotal();
-    });
+    // 🔥 calcular totals cuando el usuario escribe ZIP
+    const zipInput = form.querySelector('[name="zip"]');
+
+    if (zipInput) {
+      zipInput.addEventListener('input', () => {
+        checkout.calculateOrderTotal();
+      });
+    }
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      checkout.checkout(form);
+
+      const valid = form.checkValidity();
+      form.reportValidity();
+
+      if (valid) {
+        checkout.checkout(form);
+      }
     });
 
-    return; // 🔥 IMPORTANTE: no seguir ejecutando lo de productos
+    return;
   }
 
-  // 🏕️ SI ESTÁS EN PRODUCTOS
+  // 🏕️ PRODUCTOS
   const listElement = document.querySelector('.product-list');
 
   if (listElement) {
