@@ -24,7 +24,6 @@ export function setLocalStorage(key, data) {
 
 export function setClick(selector, callback) {
   const element = qs(selector);
-
   if (!element) return;
 
   element.addEventListener('touchend', (event) => {
@@ -42,12 +41,8 @@ export function getParam(param) {
 
 export function renderWithTemplate(template, parentElement, data, callback) {
   if (!parentElement) return;
-
   parentElement.innerHTML = template;
-
-  if (typeof callback === 'function') {
-    callback(data);
-  }
+  if (typeof callback === 'function') callback(data);
 }
 
 export async function loadTemplate(path) {
@@ -66,36 +61,36 @@ export async function loadHeaderFooter() {
     const headerTemplate = await loadTemplate('/partials/header.html');
     const footerTemplate = await loadTemplate('/partials/footer.html');
 
-    const headerElement = qs('#main-header');
-    const footerElement = qs('#main-footer');
-
-    renderWithTemplate(headerTemplate, headerElement);
-    renderWithTemplate(footerTemplate, footerElement);
+    renderWithTemplate(headerTemplate, qs('#main-header'));
+    renderWithTemplate(footerTemplate, qs('#main-footer'));
   } catch (error) {
     console.error('Error cargando header/footer:', error);
   }
 }
 
-// 👇 AFUERA, no dentro
+// 🔥 ALERTA
 export function alertMessage(message, scroll = true) {
+  const existingAlert = document.querySelector('.alert');
+  if (existingAlert) existingAlert.remove();
+
   const alert = document.createElement('div');
   alert.classList.add('alert');
 
   alert.innerHTML = `
     <span>${message}</span>
-    <button class='close-btn'>X</button>
+    <button class="close-btn">X</button>
   `;
 
-  alert.addEventListener('click', function (e) {
+  alert.addEventListener('click', (e) => {
     if (e.target.classList.contains('close-btn')) {
       alert.remove();
     }
   });
 
   const main = document.querySelector('main');
-  main.prepend(alert);
+  if (main) main.prepend(alert);
 
   if (scroll) {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 }

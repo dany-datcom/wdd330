@@ -1,5 +1,6 @@
 import { alertMessage } from './utils.mjs';
 import ExternalServices from './ExternalServices.mjs';
+
 export default class CheckoutProcess {
   constructor(key, outputSelector) {
     this.key = key;
@@ -31,9 +32,8 @@ export default class CheckoutProcess {
     this.tax = this.itemTotal * 0.06;
 
     // SHIPPING
-    this.shipping = this.list.length > 0
-      ? 10 + (this.list.length - 1) * 2
-      : 0;
+    this.shipping =
+      this.list.length > 0 ? 10 + (this.list.length - 1) * 2 : 0;
 
     this.orderTotal = this.itemTotal + this.tax + this.shipping;
 
@@ -52,7 +52,7 @@ export default class CheckoutProcess {
   }
 
   packageItems(items) {
-    return items.map(item => ({
+    return items.map((item) => ({
       id: item.Id || item.id,
       name: item.Name || item.name,
       price: item.FinalPrice || item.price,
@@ -61,6 +61,10 @@ export default class CheckoutProcess {
   }
 
   async checkout(form) {
+    // 🧹 limpiar alert anterior
+    const oldAlert = document.querySelector('.alert');
+    if (oldAlert) oldAlert.remove();
+
     const formData = new FormData(form);
     const data = {};
 
@@ -68,10 +72,10 @@ export default class CheckoutProcess {
       data[key] = value;
     });
 
-    // NORMALIZAR EXPIRATION COMPLETO
+    // 🔥 NORMALIZAR EXPIRATION
     let expiration = data.expiration.trim();
 
-    // convertir formatos tipo 2027-08 → 8/27
+    // convertir 2027-08 → 8/27
     if (expiration.includes('-')) {
       const [year, month] = expiration.split('-');
       expiration = `${parseInt(month)}/${year.slice(-2)}`;
@@ -80,15 +84,18 @@ export default class CheckoutProcess {
     // quitar 0 inicial (08 → 8)
     expiration = expiration.replace(/^0/, '');
 
-    // validar formato final M/YY
-    const regex = /^[1-9]|1[0-2]\/\d{2}$/;
-
+    // ✅ VALIDAR FORMATO
     if (!/^(1[0-2]|[1-9])\/\d{2}$/.test(expiration)) {
-  alertMessage('Invalid expiration format. Use MM/YY (e.g. 8/27)');
-  return; // 💥 DETIENE TODO
-}
+      alertMessage('Invalid expiration format. Use MM/YY (e.g. 8/27)');
+
+      form.expiration.value = '';   // limpiar campo
+      form.expiration.focus();      // enfocar
+
+      return; // ⛔ detener checkout
+    }
 
     data.expiration = expiration;
+
     const order = {
       ...data,
       orderDate: new Date().toISOString(),
@@ -113,8 +120,9 @@ export default class CheckoutProcess {
     } catch (err) {
       console.log('ERROR:', err);
 
-      // 👇 mostrar error del backend
-      alertMessage(err.message.expiration || 'Something went wrong');
+      alertMessage(
+        err.message?.expiration || 'Something went wrong'
+      );
     }
   }
 }
