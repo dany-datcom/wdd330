@@ -14,6 +14,15 @@ async function main() {
 
     checkout.init();
 
+    // 🔥 calcular totals cuando el usuario escribe ZIP
+    const zipInput = form.querySelector('[name="zip"]');
+
+    if (zipInput) {
+      zipInput.addEventListener('input', () => {
+        checkout.calculateOrderTotal();
+      });
+    }
+
     form.addEventListener('submit', (e) => {
       e.preventDefault();
 
