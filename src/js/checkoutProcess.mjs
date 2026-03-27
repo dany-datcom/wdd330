@@ -84,7 +84,7 @@ export default class CheckoutProcess {
 
     expiration = expiration.replace(/^0/, '');
     data.expiration = expiration;
-
+    console.log('CARD NUMBER ENVIADO:', data.cardNumber);
     const order = {
       ...data,
       orderDate: new Date().toISOString(),
