@@ -106,6 +106,7 @@ export default class CheckoutProcess {
 
     } catch (err) {
       console.log('ERROR COMPLETO:', err);
+      console.log('MENSAJE DEL BACKEND:', err.message);
 
       let message = 'Something went wrong';
 
