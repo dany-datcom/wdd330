@@ -416,6 +416,18 @@ margin-top: 1rem;
   color: #900;
 }
 
+.cart-card {
+  position: relative;
+}
+
+.remove-item {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
 .order-summary {
 margin-top: 2rem;
 padding: 1rem;
