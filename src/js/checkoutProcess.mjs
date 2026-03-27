@@ -29,15 +29,20 @@ export default class CheckoutProcess {
   }
 
   calculateOrderTotal() {
-    this.tax = this.itemTotal * 0.06;
+  this.tax = this.itemTotal * 0.06;
 
-    this.shipping =
-      this.list.length > 0 ? 10 + (this.list.length - 1) * 2 : 0;
+  const totalItems = this.list.reduce(
+    (sum, item) => sum + item.Quantity,
+    0
+  );
 
-    this.orderTotal = this.itemTotal + this.tax + this.shipping;
+  this.shipping =
+    totalItems > 0 ? 10 + (totalItems - 1) * 2 : 0;
 
-    this.displayOrderTotals();
-  }
+  this.orderTotal = this.itemTotal + this.tax + this.shipping;
+
+  this.displayOrderTotals();
+}
 
   displayOrderTotals() {
     document.querySelector('#tax').innerText =
