@@ -68,7 +68,7 @@ export async function loadHeaderFooter() {
   }
 }
 
-// 🔥 ALERTA
+// 🔥 ALERTA MEJORADA
 export function alertMessage(message, scroll = true) {
   const existingAlert = document.querySelector('.alert');
   if (existingAlert) existingAlert.remove();
@@ -78,9 +78,10 @@ export function alertMessage(message, scroll = true) {
 
   alert.innerHTML = `
     <span>${message}</span>
-    <button class="close-btn">X</button>
+    <button class='close-btn'>✖</button>
   `;
 
+  // cerrar con click en X
   alert.addEventListener('click', (e) => {
     if (e.target.classList.contains('close-btn')) {
       alert.remove();
@@ -90,7 +91,15 @@ export function alertMessage(message, scroll = true) {
   const main = document.querySelector('main');
   if (main) main.prepend(alert);
 
+  // scroll opcional
   if (scroll) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
+
+  // 🔥 auto desaparecer después de 5s (pro UX)
+  setTimeout(() => {
+    if (alert.parentElement) {
+      alert.remove();
+    }
+  }, 5000);
 }

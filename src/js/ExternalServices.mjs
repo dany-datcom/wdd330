@@ -1,7 +1,13 @@
 const baseURL = import.meta.env.VITE_SERVER_URL;
 
 async function convertToJson(res) {
-  const jsonResponse = await res.json();
+  let jsonResponse = null;
+
+  try {
+    jsonResponse = await res.json();
+  } catch (e) {
+    jsonResponse = { error: 'Invalid JSON response' };
+  }
 
   if (res.ok) {
     return jsonResponse;
@@ -17,7 +23,9 @@ async function fetchData(endpoint) {
   try {
     const response = await fetch(`${baseURL}${endpoint}`);
     const data = await convertToJson(response);
-    return data.Result;
+
+    // Maneja ambos casos: con Result o sin Result
+    return data?.Result || data;
   } catch (error) {
     console.error(`Error en ${endpoint}:`, error);
     return null;
@@ -44,7 +52,12 @@ export default class ExternalServices {
       body: JSON.stringify(payload)
     };
 
-    const response = await fetch(url, options);
-    return await convertToJson(response);
+    try {
+      const response = await fetch(url, options);
+      return await convertToJson(response);
+    } catch (error) {
+      console.error('Checkout error:', error);
+      throw error; // importante: lo mandamos hacia arriba
+    }
   }
 }

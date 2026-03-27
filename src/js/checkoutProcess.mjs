@@ -15,6 +15,7 @@ export default class CheckoutProcess {
   init() {
     this.list = JSON.parse(localStorage.getItem(this.key)) || [];
     this.calculateItemSubTotal();
+    this.calculateOrderTotal();
   }
 
   calculateItemSubTotal() {
@@ -75,23 +76,19 @@ export default class CheckoutProcess {
     // 🔥 NORMALIZAR EXPIRATION
     let expiration = data.expiration.trim();
 
-    // convertir 2027-08 → 8/27
     if (expiration.includes('-')) {
       const [year, month] = expiration.split('-');
       expiration = `${parseInt(month)}/${year.slice(-2)}`;
     }
 
-    // quitar 0 inicial (08 → 8)
     expiration = expiration.replace(/^0/, '');
 
     // ✅ VALIDAR FORMATO
     if (!/^(1[0-2]|[1-9])\/\d{2}$/.test(expiration)) {
       alertMessage('Invalid expiration format. Use MM/YY (e.g. 8/27)');
-
-      form.expiration.value = '';   // limpiar campo
-      form.expiration.focus();      // enfocar
-
-      return; // ⛔ detener checkout
+      form.expiration.value = '';
+      form.expiration.focus();
+      return;
     }
 
     data.expiration = expiration;
@@ -112,17 +109,30 @@ export default class CheckoutProcess {
 
       console.log('Respuesta del servidor:', result);
 
-      if (result.orderId) {
+      if (result?.orderId) {
+        // ✅ limpiar carrito
         localStorage.removeItem(this.key);
+
+        // ✅ redirigir
         window.location.href = '/checkout/success.html';
+      } else {
+        alertMessage('Order failed. Please try again.');
       }
 
     } catch (err) {
       console.log('ERROR:', err);
 
-      alertMessage(
-        err.message?.expiration || 'Something went wrong'
-      );
+      let message = 'Something went wrong';
+
+      if (err?.message) {
+        if (typeof err.message === 'string') {
+          message = err.message;
+        } else if (typeof err.message === 'object') {
+          message = Object.values(err.message).join(', ');
+        }
+      }
+
+      alertMessage(message);
     }
   }
 }
