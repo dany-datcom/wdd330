@@ -1,7 +1,7 @@
 import ExternalServices from './ExternalServices.mjs';
 import ProductList from './ProductList.mjs';
 import { loadHeaderFooter } from './utils.mjs';
-import checkoutProcess from './checkoutProcess.mjs';
+import checkoutProcess from './CheckoutProcess.mjs';
 
 async function main() {
   await loadHeaderFooter();

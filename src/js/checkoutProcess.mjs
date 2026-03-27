@@ -1,7 +1,7 @@
 import { alertMessage } from './utils.mjs';
 import ExternalServices from './ExternalServices.mjs';
 
-export default class checkoutProcess {
+export default class CheckoutProcess {
   constructor(key, outputSelector) {
     this.key = key;
     this.outputSelector = outputSelector;
@@ -71,6 +71,20 @@ export default class checkoutProcess {
       data[key] = value;
     });
 
+    // 🔥 FIX 1: limpiar tarjeta (CRÍTICO)
+    data.cardNumber = data.cardNumber.replace(/\D/g, '');
+
+    // 🔥 FIX 2: normalizar expiration (CRÍTICO)
+    let expiration = data.expiration.trim();
+
+    if (expiration.includes('-')) {
+      const [year, month] = expiration.split('-');
+      expiration = `${parseInt(month)}/${year.slice(-2)}`;
+    }
+
+    expiration = expiration.replace(/^0/, '');
+    data.expiration = expiration;
+
     const order = {
       ...data,
       orderDate: new Date().toISOString(),
@@ -82,18 +96,17 @@ export default class checkoutProcess {
 
     const service = new ExternalServices();
 
-    // 🔥 AQUÍ está lo que te están pidiendo
     try {
       const result = await service.checkout(order);
 
-      // manejo del éxito
       if (result && result.orderId) {
         localStorage.removeItem(this.key);
         window.location.href = '/checkout/success.html';
       }
 
     } catch (err) {
-      // 🔥 AQUÍ manejas el error
+      console.log('ERROR COMPLETO:', err);
+
       let message = 'Something went wrong';
 
       if (err && err.message) {
