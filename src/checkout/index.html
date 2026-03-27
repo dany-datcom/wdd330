@@ -25,9 +25,8 @@
         <fieldset>
           <legend>Customer Info</legend>
 
-          <input name='firstName' placeholder='First Name' required />
-          <input name='lastName' placeholder='Last Name' required />
-
+          <input name='fname' placeholder='First Name' required />
+          <input name='lname' placeholder='Last Name' required />
           <input name='street' placeholder='Street Address' required />
           <input name='city' placeholder='City' required />
           <input name='state' placeholder='State' required />
@@ -38,7 +37,7 @@
         <fieldset>
           <legend>Payment</legend>
 
-          <input name='cardNumber' placeholder='Card Number' required pattern='[\d\s]{16,19}' 
+          <input name='cardNumber' placeholder='Card Number' required pattern='[\d\s]{16,19}'
             title='Enter a 16-digit card number' />
 
           <input name='expiration' placeholder='MM/YY' required pattern='^(0[1-9]|1[0-2])\/\d{2}$'
